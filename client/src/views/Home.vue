@@ -1,16 +1,49 @@
 <template>
   <div>
-    <h1>Welcome to the Home Page</h1>
-    <p>This is a simple Vue.js app.</p>
+    <h1>Welcome to the HomePage</h1>
+    <ul>
+      <li v-for="product in products" :key="product.id">{{ product.name }} - {{ product.price }} </li>
+    </ul>
+    <button @click="addProduct">Adaugă produs</button>
   </div>
 </template>
 
 <script>
+import { getProducts, addProduct } from '../services/firestoreService';
+
 export default {
-  name: 'HomePage'  // Numele componentelor ar trebui să fie mai descriptive, de exemplu: 'HomePage'
+  name: 'HomePage',
+  data() {
+    return {
+      products: []
+    };
+  },
+  async mounted() {
+    // Obține produsele din Firestore la încărcarea paginii
+    this.products = await getProducts();
+  },
+  methods: {
+    async addProduct() {
+      // Exemplu de produs de adăugat
+      const newProduct = {
+        name: 'Produs Nou',
+        price: '100 RON',
+        description: 'Descrierea produsului',
+        category: {
+          name: 'Categorie Exemplu'
+        },
+        stock: {
+          quantity: 10
+        }
+      };
+      await addProduct(newProduct);
+      this.products = await getProducts(); // Actualizează lista de produse după adăugare
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* Adăugați stiluri specifice pentru HomePage aici */
+/* Stiluri pentru HomePage */
 </style>
+
