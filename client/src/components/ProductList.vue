@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h2>Lista de produse</h2>
+    <h2 className="text-green-500">Lista de produse</h2>
     <ul>
       <li v-for="product in products" :key="product.id">
         {{ product.name }} - {{ product.price }}
