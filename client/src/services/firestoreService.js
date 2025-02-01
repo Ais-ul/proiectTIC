@@ -1,22 +1,30 @@
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import db from '../firebase'; // Importă instanța Firestore
 
-// Funcție pentru a obține toate produsele
-export const getProducts = async () => {
-  const productsCollection = await db.collection('products').get(); // Obține colecția 'products'
-  return productsCollection.docs.map(doc => doc.data()); // Returnează datele produselor
-};
+// Obține toate produsele
+export async function getProducts() {
+  const productsCol = collection(db, 'products');
+  const snapshot = await getDocs(productsCol);
+  const products = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+  return products;
+}
 
-// Funcție pentru a adăuga un produs
-export const addProduct = async (product) => {
-  await db.collection('products').add(product); // Adaugă un nou document în colecția 'products'
-};
+// Adaugă un produs nou
+export async function addProduct(product) {
+  const productsCol = collection(db, 'products');
+  const docRef = await addDoc(productsCol, product);
+  return { id: docRef.id, ...product };
+}
 
-// Funcție pentru a șterge un produs
-export const deleteProduct = async (id) => {
-  await db.collection('products').doc(id).delete(); // Șterge documentul cu ID-ul specificat
-};
+// Actualizează un produs existent
+export async function updateProduct(id, product) {
+  const productRef = doc(db, 'products', id);
+  await updateDoc(productRef, product);
+  return { id, ...product };
+}
 
-// Funcție pentru a actualiza un produs
-export const updateProduct = async (id, updatedProduct) => {
-  await db.collection('products').doc(id).update(updatedProduct); // Actualizează documentul cu ID-ul specificat
-};
+// Șterge un produs
+export async function deleteProduct(id) {
+  const productRef = doc(db, 'products', id);
+  await deleteDoc(productRef);
+}
