@@ -1,6 +1,7 @@
 // firebase.js
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
+import { getAuth } from 'firebase/auth'; // Adăugat importul pentru autentificare
 
 const firebaseConfig = {
   apiKey: "AIzaSyDPyMNX8JV28DHACsSOo-h__jftE3umeOc",
@@ -13,6 +14,7 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
+const auth = getAuth(app); // 🔹 Adăugat pentru autentificare
 
-export default db;
-
+export { db, auth };
+export default db; // ✅ Adăugat pentru compatibilitate

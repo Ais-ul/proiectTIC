@@ -19,7 +19,7 @@ import ProductForm from '../components/ProductForm.vue';
 import { getProducts, addProduct, updateProduct, deleteProduct } from '../services/firestoreService';
 
 export default {
-  name: 'HomePage', // Schimbă numele componentei
+  name: 'HomePage',
   components: { ProductList, ProductForm },
   data() {
     return {
@@ -27,11 +27,15 @@ export default {
       showForm: false,
       currentProduct: { name: '', price: '' },
       formTitle: 'Adaugă produs',
-      submitButtonText: 'Adaugă'
+      submitButtonText: 'Adaugă',
     };
   },
   async mounted() {
-    this.products = await getProducts();
+    try {
+      this.products = await getProducts();
+    } catch (error) {
+      alert('Eroare la încărcarea produselor: ' + error.message);
+    }
   },
   methods: {
     showAddForm() {
@@ -41,26 +45,37 @@ export default {
       this.showForm = true;
     },
     editProduct(id) {
-      const product = this.products.find(p => p.id === id);
+      const product = this.products.find((p) => p.id === id);
       this.currentProduct = { ...product };
       this.formTitle = 'Editează produs';
       this.submitButtonText = 'Actualizează';
       this.showForm = true;
     },
     async handleSubmit(product) {
-      if (product.id) {
-        await updateProduct(product.id, product);
-      } else {
-        await addProduct(product);
+      try {
+        if (product.id) {
+          await updateProduct(product.id, product);
+        } else {
+          await addProduct(product);
+        }
+        this.products = await getProducts();
+        this.showForm = false;
+      } catch (error) {
+        alert('Eroare: ' + error.message);
       }
-      this.products = await getProducts();
-      this.showForm = false;
     },
     async deleteProduct(id) {
-      await deleteProduct(id);
-      this.products = await getProducts();
-    }
-  }
+      try {
+        await deleteProduct(id);
+        this.products = await getProducts();
+      } catch (error) {
+        alert('Eroare la ștergerea produsului: ' + error.message);
+      }
+    },
+  },
 };
 </script>
 
+<style scoped>
+/* Stiluri pentru HomePage */
+</style>
