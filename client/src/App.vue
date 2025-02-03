@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    
     <header>
       <nav>
         <ul>
@@ -9,6 +10,7 @@
       </nav>
     </header>
     <!-- Aici se vor încărca componentele rutate -->
+    <!-- <login-page/> -->
     <router-view />
   </div>
 </template>

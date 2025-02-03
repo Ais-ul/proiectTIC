@@ -4,6 +4,7 @@ import router from './router';
 // import './assets/tailwind.css'; // Importați Tailwind CSS
 import store from './store'; // adaugă această linie
 import './assets/tailwind.css';
+import './firebase';
 
 createApp(App)
   .use(router)

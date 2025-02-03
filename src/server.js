@@ -3,7 +3,7 @@ const morgan = require("morgan");
 const cors = require("cors");
 require("dotenv").config();
 const admin = require("firebase-admin");
-const routes = require("./routes"); // Importă rutele
+const routes = require("./routes"); // Importă rutele din routes.js
 
 const app = express();
 
@@ -17,7 +17,7 @@ admin.initializeApp({
     credential: admin.credential.applicationDefault(),
 });
 
-// Folosește rutele din `routes.js`
+// Folosește rutele definite în `routes.js`
 app.use("/api", routes);
 
 // Ruta de bază

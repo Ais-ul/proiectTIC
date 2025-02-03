@@ -9,6 +9,10 @@ import RegisterPage  from './components/RegisterPage.vue'; // Importă pagina de
 
 const routes = [
   {
+    path: '/',
+    redirect: '/login', // 🔹 Redirecționează direct către pagina de login
+  },
+  {
     path: '/home',
     name: 'Home',
     component: Home,

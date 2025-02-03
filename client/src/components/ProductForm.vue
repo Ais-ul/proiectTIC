@@ -1,12 +1,18 @@
 <template>
   <div>
     <h2>{{ formTitle }}</h2>
-    <form @submit.prevent="submitForm">
-      <label>Nume:</label>
-      <input v-model="localProduct.name" required />
-      <label>Preț:</label>
-      <input v-model="localProduct.price" type="number" required />
-      <button type="submit">{{ submitButtonText }}</button>
+    <form @submit.prevent="handleSubmit">
+      <div>
+        <label for="name">Nume produs:</label>
+        <input type="text" v-model="localProduct.name" id="name" />
+        <span v-if="!isValidName" class="error">Numele produsului este obligatoriu!</span>
+      </div>
+      <div>
+        <label for="price">Preț produs:</label>
+        <input type="text" v-model="localProduct.price" id="price" />
+        <span v-if="!isValidPrice" class="error">Prețul trebuie să fie un număr valid!</span>
+      </div>
+      <button type="submit" :disabled="!isFormValid">{{ submitButtonText }}</button>
     </form>
   </div>
 </template>
@@ -30,6 +36,8 @@ export default {
   data() {
     return {
       localProduct: { ...this.product }, // Copie locală a prop-ului
+      isValidName: true,
+      isValidPrice: true,
     };
   },
   watch: {
@@ -38,15 +46,30 @@ export default {
       this.localProduct = { ...newProduct };
     },
   },
-  methods: {
-    submitForm() {
-      // Emite eveniment cu datele actualizate
-      this.$emit('submit-form', this.localProduct);
-    },
+  computed: {
+    isFormValid() {
+      return this.isValidName && this.isValidPrice;
+    }
   },
+  methods: {
+    validateForm() {
+      // Validăm dacă numele nu este gol și dacă prețul este valid
+      this.isValidName = this.localProduct.name.trim() !== ''; 
+      this.isValidPrice = !isNaN(this.localProduct.price) && this.localProduct.price.trim() !== '';
+    },
+    handleSubmit() {
+      this.validateForm(); // Validăm înainte de trimitere
+      if (this.isFormValid) {
+        this.$emit('submit-form', this.localProduct); // Emiterea datelor valide către părinte
+      }
+    }
+  }
 };
 </script>
 
 <style scoped>
-/* Stiluri pentru formular */
+.error {
+  color: red;
+  font-size: 12px;
+}
 </style>
