@@ -15,7 +15,7 @@ const validateProduct = (req, res, next) => {
     return res.status(400).json({ error: 'Prețul trebuie să fie un număr valid mai mare de 0!' });
   }
   
-  next(); // Dacă datele sunt valide, continuăm cu logica de adăugare, acum scriu asta pt push
+  next(); // Dacă datele sunt valide, continuăm cu logica de adăugare, PUSH TEST
 };
 
 // Rută protejată - doar utilizatorii autentificați pot accesa
