@@ -36,7 +36,7 @@ const store = createStore({
     async addProduct({ commit }, product) {
       try {
         const newProduct = await addProduct(product);
-        commit('addProduct', { ...product, id: newProduct.id }); // Adăugăm produsul cu ID generat
+        commit('addProduct', { ...product, id: newProduct.id }); // Asigură că are ID
       } catch (error) {
         console.error('Eroare la adăugarea produsului:', error);
       }

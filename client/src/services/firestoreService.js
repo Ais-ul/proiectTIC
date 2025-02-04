@@ -1,4 +1,4 @@
-import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, updateDoc, deleteDoc, getDoc } from 'firebase/firestore';
 import db from '../firebase';
 
 // Validare pentru produs
@@ -26,11 +26,11 @@ export async function getProducts() {
 
 // Adaugă un produs nou
 export async function addProduct(product) {
-  validateProduct(product); // Validează produsul înainte de salvare
+  validateProduct(product); // Validează produsul
   try {
     const productsCol = collection(db, 'products');
     const docRef = await addDoc(productsCol, product);
-    return { id: docRef.id, ...product };
+    return { id: docRef.id, ...product }; // Asigură return-ul corect
   } catch (error) {
     console.error('Eroare la adăugarea produsului:', error);
     throw error;
@@ -49,7 +49,29 @@ export async function updateProduct(id, product) {
     throw error;
   }
 }
+export async function getProductById(id) {
+  try {
+    const productRef = doc(db, 'products', id);
+    const productSnap = await getDoc(productRef);
 
+    if (productSnap.exists()) {
+      const productData = productSnap.data();
+      return {
+        id: productSnap.id,
+        name: productData.name,
+        price: productData.price,
+        description: productData.description || 'Nu există descriere.',
+        stock: productData.stock !== undefined ? productData.stock : 'Necunoscut',
+        category: productData.category || 'Fără categorie'
+      };
+    } else {
+      throw new Error('Produsul nu a fost găsit.');
+    }
+  } catch (error) {
+    console.error('Eroare la obținerea produsului:', error);
+    throw error;
+  }
+}
 // Șterge un produs
 export async function deleteProduct(id) {
   try {

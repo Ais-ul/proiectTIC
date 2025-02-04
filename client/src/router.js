@@ -6,6 +6,7 @@ import Home from './views/Home.vue';
 import About from './views/About.vue';
 import LoginPage  from './components/LoginPage.vue'; // Importă pagina de login
 import RegisterPage  from './components/RegisterPage.vue'; // Importă pagina de register
+import ProductDetails from './views/ProductDetails.vue';
 
 const routes = [
   {
@@ -22,6 +23,13 @@ const routes = [
     path: '/about',
     name: 'About',
     component: About,
+  },
+  {
+    path: '/product/:id',
+    name: 'ProductDetails',
+    component:  ProductDetails,
+    props: true, // Permite transmiterea de parametri ca props
+    meta: { requiresAuth: true } // Protejează ruta dacă trebuie să fie accesibilă doar userilor autentificați
   },
   {
     path: '/login',

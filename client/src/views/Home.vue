@@ -1,20 +1,38 @@
 <template>
   <div>
-    <h1>Welcome to the HomePage</h1>
+    <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
+      <!-- Stânga: Buton Adaugă Produs -->
+      <div class="flex items-center gap-4">
+        <button @click="showAddForm" class="bg-blue-500 text-white px-4 py-2 rounded">
+          Adaugă produs
+        </button>
+
+        <div v-if="showForm" class="ml-4">
+          <ProductForm
+            :product="currentProduct"
+            :formTitle="formTitle"
+            :submitButtonText="submitButtonText"
+            @submit-form="handleSubmit"
+            @cancel-form="handleCancel"
+            class="border p-4 rounded shadow-lg bg-white"
+          />
+        </div>
+      </div>
+
+      <!-- Dreapta: Buton Logout -->
+      <button @click="logout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
+        Delogare
+      </button>
+    </div>
+
+    <!-- Lista de produse -->
     <ProductList :products="products" @edit-product="editProduct" @delete-product="deleteProduct" />
-    <button @click="showAddForm">Adaugă produs</button>
-    <ProductForm
-      v-if="showForm"
-      :product="currentProduct"
-      :formTitle="formTitle"
-      :submitButtonText="submitButtonText"
-      @submit-form="handleSubmit"
-    />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
+import { getAuth } from 'firebase/auth'; // Importă autentificarea Firebase
 import ProductList from '../components/ProductList.vue';
 import ProductForm from '../components/ProductForm.vue';
 
@@ -30,44 +48,64 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(['allProducts']), // Obținem lista de produse din store
+    ...mapGetters(['allProducts']),
     products() {
       return this.allProducts;
     },
   },
   async mounted() {
-    await this.loadProducts(); // Încărcăm produsele la montare
+    await this.loadProducts();
   },
   methods: {
     ...mapActions(['loadProducts', 'addProduct', 'updateProduct', 'deleteProduct']),
     showAddForm() {
       this.currentProduct = { name: '', price: '' };
-      this.formTitle = 'Adaugă produs';
+      this.formTitle = 'Te rog să adaugi un produs';
       this.submitButtonText = 'Adaugă';
       this.showForm = true;
     },
     editProduct(id) {
       const product = this.products.find((p) => p.id === id);
-      this.currentProduct = { ...product };
-      this.formTitle = 'Editează produs';
-      this.submitButtonText = 'Actualizează';
-      this.showForm = true;
-    },
-      async handleSubmit(product) {
-    try {
-      if (product.id) {
-        await this.updateProduct(product); // Actualizare produs
+      if (product) {
+        this.currentProduct = { ...product };
+        this.formTitle = 'Editează produs';
+        this.submitButtonText = 'Actualizează';
+        this.showForm = true;
       } else {
-        await this.addProduct(product); // Adăugare produs
+        console.error('Produsul nu a fost găsit');
       }
+    },
+    async handleSubmit(product) {
+      product.price = Number(product.price);
+      if (isNaN(product.price) || product.price <= 0) {
+        alert('Prețul trebuie să fie un număr pozitiv!');
+        return;
+      }
+
+      if (product.id) {
+        await this.updateProduct({ ...product });
+      } else {
+        await this.addProduct(product);
+      }
+
+      await this.loadProducts();
       this.showForm = false;
-    } catch (error) {
-      alert('Eroare: ' + error.response.data.error); // Afișăm eroarea de la server
-    }
-  },
-    async deleteProduct(id) {
+    },
+    handleCancel() {
+      this.showForm = false;
+    },
+    async deleteProductHandler(id) {
       await this.deleteProduct(id);
+      await this.loadProducts();
+    },
+    async logout() {
+      try {
+        await getAuth().signOut();
+        this.$router.push('/login'); // Redirecționează către login după delogare
+      } catch (error) {
+        console.error('Eroare la delogare:', error);
+      }
     }
-  },
+  }
 };
 </script>
