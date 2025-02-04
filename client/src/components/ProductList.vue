@@ -7,7 +7,7 @@
         :key="product.id" 
         class="flex justify-between items-center p-4 border border-gray-300 rounded-lg bg-gray-50"
       >
-        <!-- Link către pagina produsului -->
+      
         <router-link 
           :to="'/product/' + product.id" 
           class="text-lg font-bold text-blue-600 hover:underline"

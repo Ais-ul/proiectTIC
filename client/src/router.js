@@ -1,40 +1,35 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { getAuth } from 'firebase/auth';
 
-// Importă componentele tale pentru rute
+
 import Home from './views/Home.vue';
-import About from './views/About.vue';
-import LoginPage  from './components/LoginPage.vue'; // Importă pagina de login
-import RegisterPage  from './components/RegisterPage.vue'; // Importă pagina de register
+import LoginPage  from './components/LoginPage.vue'; 
+import RegisterPage  from './components/RegisterPage.vue'; 
 import ProductDetails from './views/ProductDetails.vue';
 
 const routes = [
   {
     path: '/',
-    redirect: '/login', // 🔹 Redirecționează direct către pagina de login
+    redirect: '/login', 
   },
   {
     path: '/home',
     name: 'Home',
     component: Home,
-    meta: { requiresAuth: true }, // Protejează ruta de home
+    meta: { requiresAuth: true }, 
   },
-  {
-    path: '/about',
-    name: 'About',
-    component: About,
-  },
+
   {
     path: '/product/:id',
     name: 'ProductDetails',
     component:  ProductDetails,
-    props: true, // Permite transmiterea de parametri ca props
-    meta: { requiresAuth: true } // Protejează ruta dacă trebuie să fie accesibilă doar userilor autentificați
+    props: true, 
+    meta: { requiresAuth: true } 
   },
   {
     path: '/login',
     name: 'Login',
-    component: LoginPage // Asigură-te că aceasta este corectă
+    component: LoginPage 
   },
   {
     path: '/register',
@@ -44,23 +39,23 @@ const routes = [
 
 ];
 
-// Creează router-ul
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes,
 });
 
-// Adaugă un middleware pentru a verifica autentificarea
-router.beforeEach((to, from, next) => {
-  const user = getAuth().currentUser; // Obține utilizatorul curent din Firebase Auth
 
-  // Dacă ruta necesită autentificare și utilizatorul nu este autentificat
+router.beforeEach((to, from, next) => {
+  const user = getAuth().currentUser; 
+
+ 
   if (to.meta.requiresAuth && !user) {
-    next({ name: 'Login' }); // Redirecționează la login
+    next({ name: 'Login' }); 
   } else if (user && (to.name === 'LoginPage' || to.name === 'RegisterPage')) {
-    next({ name: 'Home' }); // Dacă utilizatorul este autentificat și încearcă să acceseze login/register, redirecționează-l la home
+    next({ name: 'Home' }); 
   } else {
-    next(); // Permite accesul la rutele dorite
+    next(); 
   }
 });
 

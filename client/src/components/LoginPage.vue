@@ -14,15 +14,15 @@ const login = async () => {
     const userCredential = await signInWithEmailAndPassword(auth, email.value, password.value);
     const token = await userCredential.user.getIdToken();
     localStorage.setItem("token", token);
-   router.push("/home"); // Redirecționare la pagina Home
+   router.push("/home"); 
   } catch (error) {
     errorMessage.value = "Eroare la autentificare!";
   }
 };
 
-const goToRegister = () => {
-  router.push("/register");
-};
+// const goToRegister = () => {
+//   router.push("/register");
+// };
 </script>
 
 <template>
@@ -40,7 +40,8 @@ const goToRegister = () => {
  <button @click="login" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Login</button>
       <p v-if="errorMessage" class="text-red-500 text-center mt-2">{{ errorMessage }}</p>
       <div class="mt-4 text-center">
-         <button @click="goToRegister"  class="text-blue-500 hover:underline">Creare cont</button>
+ <router-link to="/register" class="text-blue-500 hover:underline">Creare cont</router-link>
+
       </div>
     </div>
   </div>

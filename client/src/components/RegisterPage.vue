@@ -34,7 +34,7 @@ const register = async () => {
       <button @click="register" class="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">Înregistrează-te</button>
       <p v-if="errorMessage" class="text-red-500 text-center mt-2">{{ errorMessage }}</p>
       <div class="mt-4 text-center">
-        <button @click="router.push('/login')" class="text-blue-500 hover:underline">Înapoi la autentificare</button>
+       <router-link to="/login" class="text-blue-500 hover:underline">Înapoi la autentificare</router-link>
       </div>
     </div>
   </div>

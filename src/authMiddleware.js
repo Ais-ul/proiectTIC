@@ -1,8 +1,8 @@
 const admin = require("firebase-admin");
 
-// Middleware pentru verificarea autentificării
+
 const authMiddleware = async (req, res, next) => {
-    const token = req.headers.authorization?.split(" ")[1]; // Extrage token-ul din "Authorization: Bearer <TOKEN>"
+    const token = req.headers.authorization?.split(" ")[1]; 
 
     if (!token) {
         return res.status(401).json({ message: "Unauthorized: No token provided" });
@@ -10,8 +10,8 @@ const authMiddleware = async (req, res, next) => {
 
     try {
         const decodedToken = await admin.auth().verifyIdToken(token);
-        req.user = decodedToken; // Adaugă user-ul verificat în request
-        next(); // Continuă execuția către ruta următoare
+        req.user = decodedToken; 
+        next(); 
     } catch (error) {
         return res.status(403).json({ message: "Forbidden: Invalid token", error });
     }

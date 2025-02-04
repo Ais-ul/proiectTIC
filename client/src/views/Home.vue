@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
-      <!-- Stânga: Buton Adaugă Produs -->
+   
       <div class="flex items-center gap-4">
         <button @click="showAddForm" class="bg-blue-500 text-white px-4 py-2 rounded">
           Adaugă produs
@@ -19,20 +19,20 @@
         </div>
       </div>
 
-      <!-- Dreapta: Buton Logout -->
+      
       <button @click="logout" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition">
         Delogare
       </button>
     </div>
 
-    <!-- Lista de produse -->
+  
     <ProductList :products="products" @edit-product="editProduct" @delete-product="deleteProduct" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import { getAuth } from 'firebase/auth'; // Importă autentificarea Firebase
+import { getAuth } from 'firebase/auth'; 
 import ProductList from '../components/ProductList.vue';
 import ProductForm from '../components/ProductForm.vue';
 
@@ -101,7 +101,7 @@ export default {
     async logout() {
       try {
         await getAuth().signOut();
-        this.$router.push('/login'); // Redirecționează către login după delogare
+        this.$router.push('/login'); 
       } catch (error) {
         console.error('Eroare la delogare:', error);
       }

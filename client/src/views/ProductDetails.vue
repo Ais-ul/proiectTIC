@@ -6,7 +6,9 @@
     <p class="text-lg"><strong>Stoc:</strong> {{ product.stock !== undefined ? product.stock : 'Necunoscut' }}</p>
     <p class="text-lg"><strong>Categorie:</strong> {{ product.category || 'Fără categorie' }}</p>
 
-    <button @click="$router.push('/home')" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded">Înapoi</button>
+  <router-link to="/home" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded inline-block text-center">
+  Înapoi
+</router-link>
   </div>
 </template>
 
@@ -20,7 +22,7 @@ export default {
     };
   },
   async created() {
-    const productId = this.$route.params.id; // Luăm ID-ul din URL
+    const productId = this.$route.params.id; 
     this.product = await getProductById(productId);
   }
 };

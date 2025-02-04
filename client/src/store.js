@@ -4,24 +4,24 @@ import { getProducts, addProduct, updateProduct, deleteProduct } from './service
 const store = createStore({
   state() {
     return {
-      products: [] // Lista de produse
+      products: [] 
     };
   },
   mutations: {
     setProducts(state, products) {
-      state.products = products; // Setăm produsele în state
+      state.products = products; 
     },
     addProduct(state, product) {
-      state.products.push(product); // Adăugăm un nou produs în listă
+      state.products.push(product); 
     },
     updateProduct(state, updatedProduct) {
       const index = state.products.findIndex(p => p.id === updatedProduct.id);
       if (index !== -1) {
-        state.products[index] = updatedProduct; // Actualizăm produsul
+        state.products[index] = updatedProduct; 
       }
     },
     deleteProduct(state, productId) {
-      state.products = state.products.filter(p => p.id !== productId); // Ștergem produsul
+      state.products = state.products.filter(p => p.id !== productId); 
     }
   },
   actions: {
@@ -36,7 +36,7 @@ const store = createStore({
     async addProduct({ commit }, product) {
       try {
         const newProduct = await addProduct(product);
-        commit('addProduct', { ...product, id: newProduct.id }); // Asigură că are ID
+        commit('addProduct', { ...product, id: newProduct.id }); 
       } catch (error) {
         console.error('Eroare la adăugarea produsului:', error);
       }
