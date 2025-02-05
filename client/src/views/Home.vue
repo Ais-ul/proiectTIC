@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="flex items-center justify-between p-4 bg-gray-100 rounded-lg">
+    <div class="flex items-center justify-between p-4  rounded-lg">
    
       <div class="flex items-center gap-4">
         <button @click="showAddForm" class="bg-blue-500 text-white px-4 py-2 rounded">

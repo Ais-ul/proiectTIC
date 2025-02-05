@@ -12,7 +12,6 @@ app.use(morgan("dev"));
 app.use(cors());
 app.use(express.json());
 
-// Inițializare Firebase Admin
 admin.initializeApp({
     credential: admin.credential.applicationDefault(),
 });

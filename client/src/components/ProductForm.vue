@@ -3,7 +3,7 @@
     <h2 class="text-xl font-semibold text-gray-700 mb-4">{{ formTitle }}</h2>
 
     <form @submit.prevent="handleSubmit" class="space-y-4">
-      <!-- Nume produs -->
+     
       <div class="relative">
         <input
           type="text"
@@ -16,7 +16,7 @@
         <p v-if="showNameError" class="text-red-500 text-sm mt-1">Numele produsului este obligatoriu!</p>
       </div>
 
-      <!-- Preț produs -->
+     
       <div class="relative">
         <input
           type="text"
@@ -29,7 +29,7 @@
         <p v-if="showPriceError" class="text-red-500 text-sm mt-1">Prețul trebuie să fie un număr valid!</p>
       </div>
 
-      <!-- Butoane -->
+     
       <div class="flex justify-end space-x-3">
         <button
           type="submit"
@@ -79,7 +79,7 @@ export default {
         return this.localProduct.price ? this.localProduct.price.toString() : '';
       },
       set(value) {
-        this.localProduct.price = value.replace(',', '.'); // Înlocuiește "," cu "."
+        this.localProduct.price = value.replace(',', '.'); 
       },
     },
     isFormValid() {
@@ -101,7 +101,7 @@ export default {
       const parsedPrice = parseFloat(this.localProduct.price);
       this.showPriceError = isNaN(parsedPrice) || parsedPrice <= 0;
       if (!this.showPriceError) {
-        this.localProduct.price = parsedPrice.toFixed(2); // Formatează cu 2 zecimale
+        this.localProduct.price = parsedPrice.toFixed(2); 
       }
     },
     handleSubmit() {

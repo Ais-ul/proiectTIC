@@ -20,7 +20,7 @@ const register = async () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center  bg-gray-100">
+  <div class="flex items-center justify-center  mt-12">
     <div class="bg-green-200 p-6 rounded-lg shadow-lg w-96">
       <h2 class="text-2xl font-semibold text-center mb-4">Înregistrare</h2>
       <div class="mb-4">
